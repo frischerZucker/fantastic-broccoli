@@ -56,7 +56,7 @@ public class Field {
 		}
 
 		/*
-		 * calculates number of mines near to every position
+		 * calculates number of mines near to every position and writes it into the array
 		 */
 		for (int posH = 0; posH < FIELD_HEIGHT; posH++) {
 			for (int posW = 0; posW < FIELD_WIDTH; posW++) {
