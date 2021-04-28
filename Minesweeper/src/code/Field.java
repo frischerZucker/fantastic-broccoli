@@ -5,10 +5,10 @@ all kinds off stuff for the matchfield
 */
 
 public class Field {
-	private final int FIELD_HEIGHT, FIELD_WIDTH, START_MINES;
+	public final int FIELD_HEIGHT, FIELD_WIDTH, START_MINES;
 	private final int MINE = -1;
 
-	private int[][] field;
+	public int[][] field;
 
 	public Field(int height, int width, int mines) {
 		FIELD_HEIGHT = height;
@@ -25,6 +25,10 @@ public class Field {
 		}
 
 	}
+	
+	public static void sectorClicked(String sectorId) {
+		System.out.println(sectorId);
+	}
 
 	/*
 	 * generates an array that represents the field
@@ -36,8 +40,9 @@ public class Field {
 		int[][] f = new int[FIELD_HEIGHT][FIELD_WIDTH];
 
 		/*
-		 * places mines at random spots of the field START_MINES: number of mines that
-		 * will be placed
+		 * places mines at random spots of the field
+		 * 
+		 * START_MINES: number of mines that will be placed
 		 */
 		for (int a = 0; a < START_MINES; a++) {
 			int posH, posW;
@@ -46,8 +51,6 @@ public class Field {
 				posH = (int) (Math.random() * FIELD_HEIGHT - 1);
 				posW = (int) (Math.random() * FIELD_WIDTH - 1);
 			} while (f[posH][posW] == MINE);
-
-			System.out.println(posH + " " + posW);
 
 			f[posH][posW] = MINE;
 		}
@@ -59,23 +62,27 @@ public class Field {
 			for (int posW = 0; posW < FIELD_WIDTH; posW++) {
 				if (f[posH][posW] != -1) {
 					int counter = 0;
-					
+
 					/*
 					 * field ids:
+					 * 
 					 * 1 2 3
+					 * 
 					 * 8 x 4
+					 * 
 					 * 7 6 5
 					 */
-					
+
 					/*
 					 * 1
 					 */
 					try {
 						if (f[posH - 1][posW - 1] == -1) {
-						counter++;
+							counter++;
 						}
-					} catch (Exception e) {	}
-					
+					} catch (Exception e) {
+					}
+
 					/*
 					 * 2
 					 */
@@ -83,8 +90,9 @@ public class Field {
 						if (f[posH - 1][posW] == -1) {
 							counter++;
 						}
-					} catch (Exception e) {	}
-					
+					} catch (Exception e) {
+					}
+
 					/*
 					 * 3
 					 */
@@ -92,54 +100,59 @@ public class Field {
 						if (f[posH - 1][posW + 1] == -1) {
 							counter++;
 						}
-					} catch (Exception e) {	}
-					
-					/* 
+					} catch (Exception e) {
+					}
+
+					/*
 					 * 4
 					 */
 					try {
 						if (f[posH][posW + 1] == -1) {
 							counter++;
-						}	
-					} catch (Exception e) {	}
-					
-					/* 
+						}
+					} catch (Exception e) {
+					}
+
+					/*
 					 * 5
 					 */
 					try {
 						if (f[posH + 1][posW + 1] == -1) {
 							counter++;
 						}
-					} catch (Exception e) {	}
-					
-					/* 
+					} catch (Exception e) {
+					}
+
+					/*
 					 * 6
 					 */
 					try {
 						if (f[posH + 1][posW] == -1) {
 							counter++;
 						}
-					} catch (Exception e) {	}
-					
-					/* 
+					} catch (Exception e) {
+					}
+
+					/*
 					 * 7
 					 */
 					try {
 						if (f[posH + 1][posW - 1] == -1) {
 							counter++;
 						}
-					} catch (Exception e) {	}
-					
-					/* 
+					} catch (Exception e) {
+					}
+
+					/*
 					 * 8
 					 */
 					try {
 						if (f[posH][posW - 1] == -1) {
 							counter++;
 						}
-					} catch (Exception e) {	}
-					
-					
+					} catch (Exception e) {
+					}
+
 					f[posH][posW] = counter;
 				}
 			}
