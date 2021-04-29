@@ -8,7 +8,8 @@ public class Field {
 	public final int FIELD_HEIGHT, FIELD_WIDTH, START_MINES;
 	private final int MINE = -1;
 
-	public int[][] field;
+	public int[][] field, knownField;
+	private String[][] visibleField;
 
 	public Field(int height, int width, int mines) {
 		FIELD_HEIGHT = height;
@@ -16,18 +17,105 @@ public class Field {
 		START_MINES = mines;
 
 		field = generateField();
+		IO.printIntField(field, FIELD_HEIGHT, FIELD_WIDTH);
+		
+		knownField = generateKnownField();
+		IO.printIntField(knownField, FIELD_HEIGHT, FIELD_WIDTH);
+		
+		visibleField = createVisibleField();
+		IO.printStringField(visibleField, FIELD_HEIGHT, FIELD_WIDTH);
+	}
 
-		for (int a = 0; a < FIELD_HEIGHT; a++) {
-			for (int b = 0; b < FIELD_WIDTH; b++) {
-				System.out.print(field[a][b] + " ");
-			}
-			System.out.println();
+	public void detonate(int posH, int posW) {
+		System.out.println("a");
+		if(field[posH][posW] == -1) {
+			System.out.println("game over");
+		} else {
+			knownField[posH][posW] = 1;
+			
+			visibleField = createVisibleField();
 		}
-
+		
+		IO.printStringField(visibleField, FIELD_HEIGHT, FIELD_WIDTH);
 	}
 	
-	public static void sectorClicked(String sectorId) {
-		System.out.println(sectorId);
+	/*
+	 * generates an array representing the field the player will be able to see
+	 */
+	private String[][] createVisibleField(){
+		/*
+		 * creates an array with the specified height and width
+		 */
+		String[][] f = new String[FIELD_HEIGHT][FIELD_WIDTH];
+		
+		for (int a = 0; a < FIELD_HEIGHT; a++) {
+			for (int b = 0; b < FIELD_WIDTH; b++) {
+				if(knownField[a][b] == 1) {
+					f[a][b] = Integer.toString(field[a][b]);
+				} else {
+					f[a][b] = "?";
+				}
+			}
+		}
+		
+		return f;
+	}
+
+	/*
+	 * generates an array for knowing which parts of the field should be visible
+	 */
+	private int[][] generateKnownField() {
+		/*
+		 * creates an array with the specified height and width
+		 */
+		int[][] f = new int[FIELD_HEIGHT][FIELD_WIDTH];
+
+		/*
+		 * searches for a possible starting point -> field[a][b] should be 0
+		 * 
+		 * if found, sets value to 1
+		 */
+		for (int a = 0; a < FIELD_HEIGHT; a++) {
+			for (int b = 0; b < FIELD_WIDTH; b++) {
+				if (field[a][b] == 0) {
+					f[a][b] = 1;
+					
+					try {
+						f[a - 1][b - 1] = 1;
+					} catch (Exception e) {	}
+					
+					try {
+						f[a - 1][b] = 1;
+					} catch (Exception e) {	}
+					
+					try {
+						f[a - 1][b + 1] = 1;
+					} catch (Exception e) {	}
+					
+					try {
+						f[a][b + 1] = 1;
+					} catch (Exception e) {	}
+					
+					try {
+						f[a + 1][b + 1] = 1;
+					} catch (Exception e) {	}
+					
+					try {
+						f[a + 1][b] = 1;
+					} catch (Exception e) {	}
+					
+					try {
+						f[a + 1][b - 1] = 1;
+					} catch (Exception e) {	}
+					
+					try {
+						f[a][b - 1] = 1;
+					} catch (Exception e) {	}
+				}
+			}
+		}
+
+		return f;
 	}
 
 	/*
@@ -56,7 +144,8 @@ public class Field {
 		}
 
 		/*
-		 * calculates number of mines near to every position and writes it into the array
+		 * calculates number of mines near to every position and writes it into the
+		 * array
 		 */
 		for (int posH = 0; posH < FIELD_HEIGHT; posH++) {
 			for (int posW = 0; posW < FIELD_WIDTH; posW++) {

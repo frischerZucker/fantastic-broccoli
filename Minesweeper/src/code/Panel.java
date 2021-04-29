@@ -14,14 +14,14 @@ public class Panel extends JPanel {
 
 	private final int SECTOR_SIZE = 20;
 
-	private Field field;
+	public Field field;
 	
 	private FieldSector[][] fieldsSectors;
 
 	public Panel(Dimension size) {
 		PANEL_SIZE = size;
 
-		field = new Field(50, 50, 250);
+		field = new Field(10, 10, 20);
 		
 		fieldsSectors = new FieldSector[field.FIELD_HEIGHT][field.FIELD_WIDTH];
 
@@ -40,7 +40,7 @@ public class Panel extends JPanel {
 
 		setVisible(true);
 
-		addFieldSectors();
+//		addFieldSectors();
 	}
 
 	/*
