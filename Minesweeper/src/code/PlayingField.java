@@ -17,6 +17,8 @@ public class PlayingField extends JPanel {
 	private int posX, posY;
 	
 	private int zoom = 1;
+	
+	public static int[][] playingField;
 
 	/**
 	 * Create the panel.

@@ -28,6 +28,8 @@ public class Frame implements Runnable, ItemListener {
 
 	private PlayingField playingField;
 
+	private CreateFieldPanel createFieldPanel;
+	
 	private JPanel bgPanel;
 
 	private Boolean isRunning = false, isExplodeMode = true;
@@ -35,10 +37,7 @@ public class Frame implements Runnable, ItemListener {
 	private Thread thread;
 
 	private JToggleButton selectMarkModeBtn, selectExplodeModeBtn;
-	private JTextField heightInput;
-	private JTextField widthInput;
-	private JTextField mineInput;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -57,6 +56,8 @@ public class Frame implements Runnable, ItemListener {
 
 		playingField = new PlayingField(FRAME_SIZE);
 
+		createFieldPanel = new CreateFieldPanel(FRAME_SIZE);
+		
 		initialize();
 	}
 
@@ -64,7 +65,7 @@ public class Frame implements Runnable, ItemListener {
 	 * update method; called once per main loop run
 	 */
 	private void tick() {
-
+		
 	}
 
 	/**
@@ -104,6 +105,8 @@ public class Frame implements Runnable, ItemListener {
 		playingFieldUnderground.add(playingField);
 
 		addButtons();
+		
+		addCreateFieldPanel();
 
 		thread = new Thread(this);
 
@@ -128,6 +131,10 @@ public class Frame implements Runnable, ItemListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void addCreateFieldPanel() {		
+		bgPanel.add(createFieldPanel);
 	}
 
 	/*
@@ -172,36 +179,12 @@ public class Frame implements Runnable, ItemListener {
 				FRAME_SIZE.height / 11 + FRAME_SIZE.height / 4 * 3, FRAME_SIZE.height / 20, FRAME_SIZE.height / 20);
 		selectMarkModeBtn.addItemListener(this);
 		bgPanel.add(selectMarkModeBtn);
-
-		widthInput = new JTextField();
-		widthInput.setToolTipText("input width");
-		widthInput.setBounds(FRAME_SIZE.height / 11 * 3 + FRAME_SIZE.height / 4 * 3, FRAME_SIZE.height / 11,
-				FRAME_SIZE.height / 9, FRAME_SIZE.height / 40);
-		bgPanel.add(widthInput);
-		widthInput.setColumns(10);
-
-		heightInput = new JTextField();
-		heightInput.setToolTipText("input height");
-		heightInput.setBounds(FRAME_SIZE.height / 11 * 3 + FRAME_SIZE.height / 4 * 3,
-				FRAME_SIZE.height / 11 + FRAME_SIZE.height / 20, FRAME_SIZE.height / 9, FRAME_SIZE.height / 40);
-		bgPanel.add(heightInput);
-		heightInput.setColumns(10);
-
-		mineInput = new JTextField();
-		mineInput.setToolTipText("input number of mines");
-		mineInput.setBounds(FRAME_SIZE.height / 11 * 3 + FRAME_SIZE.height / 4 * 3,
-				FRAME_SIZE.height / 11 + FRAME_SIZE.height / 10, FRAME_SIZE.height / 9, FRAME_SIZE.height / 40);
-		bgPanel.add(mineInput);
-		mineInput.setColumns(10);
-
-		JButton createFieldBtn = new JButton("create field");
-		createFieldBtn.setBounds(FRAME_SIZE.height / 11 * 3 + FRAME_SIZE.height / 4 * 3,
-				FRAME_SIZE.height / 11 + FRAME_SIZE.height / 7, FRAME_SIZE.height / 9, FRAME_SIZE.height / 40);
-		bgPanel.add(createFieldBtn);
 	}
 
 	@Override
 	public void run() {
+		playingField.playingField = createFieldPanel.createField();
+		
 		while (isRunning) {
 			tick();
 		}
